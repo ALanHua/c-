@@ -36,8 +36,40 @@ int day01(int argc, const char * argv[])
     return 0;
 }
 
+int day02(int argc, const char * argv[])
+{
+    std::string book("0-201-78345-X");
+    std::cout << book << std::endl;
+    return 0;
+}
+
+void showbits(int var)
+{
+    typedef unsigned char uc;
+    uc* p = (uc*)&var;
+    uc byte;
+    
+    for (int j = 0; j < sizeof(int); j++) {
+        byte = *p;
+        for (int i = 0; i < 8; i++) {
+            if (0x80 & byte) {
+                putchar('1');
+            }else{
+                putchar('0');
+            }
+            byte <<= 1;
+        }
+        putchar(' ');
+        p++;
+    }
+    puts("");
+}
+
 int main(int argc, const char * argv[]) {
-//    day01(argc,argv);
-    std::cout << "\tHI!\n";
+
+    int v1 = 0x61626364;
+    
+    showbits(v1);
+    
     return 0;
 }
