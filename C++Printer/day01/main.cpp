@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <new>
 // 命名空间解决名字冲突的问题
 // 匿名名字空间 -- 全局名字空间 ::var = 123 / var = 123
 // c++ 结构体还可以是函数，甚至还可以是类型
@@ -48,6 +49,23 @@ namespace andy {
     {
         cout << "一个人" << p.name <<"," << p.gender << endl;
     }
+    
+    void show(const char* name,char gender = 'M');
+    
+    void show(const char* name,char gender){
+        cout << name << (gender == 'M'? "女" :"男") << endl;
+    }
+    
+    inline int max(int a,int b){
+        return a < b ? b : a;
+    }
+    
+    struct Date{
+        int year;
+        int month;
+        int day;
+    };
+    
 }
 
 /** 强制类型转换
@@ -60,6 +78,13 @@ namespace andy {
 /**
  1,c 函数默认返回int 类型，c++ 作废
  2,c 空参数表示参数个数随意，c++中只表示无惨，函数在调用前必须声明或者定义
+ */
+// 哑元: 多余的形参，不需要指定名字,一般为了跟以前的版本兼容，e偶尔也用于其他用途
+// 宏函数，C++ 基本不用 一般用inline代替，和g宏函数一样高效
+/**
+内存管理：c语言/malloc/free/calloc/realloc c++ new 类型 /delete 地址/ delete[] 地址
+new(指定地址)类型，在指定的地方分配内存
+ new 失败会throw 抛出异常，可以使用nothrow来
  */
 
 int main(int argc, const char * argv[]) {
@@ -118,6 +143,36 @@ int main(int argc, const char * argv[]) {
     show(fj);
     show(45.6);
     show(10, 20);
+    show("andy");
+    
+    int x1 = 10;
+    int y2 = 20;
+    int z = max(x1, y2);
+    
+    cout << z << endl;
+    
+    int* pi = new int;
+    int n = 200;
+    char* pc = new char[n];
+    double* pd = new (nothrow)double[n];
+    long* pl = new long(123);
+//    空圆括号的称为零初始化
+    short* ps = new short();
+    
+    *pi = n + 1;
+    strcpy(pc, "andy");
+    pd[0] = 123.45;
+    cout << *pi <<","<< pc <<","<< pd[0] <<","<< *pl <<","<< *ps << endl;
+    
+    delete pi;
+    delete[] pc;
+    delete[] pd;
+    delete pl;
+    delete ps;
+    
+    int Date::*p3 = &Date::year;
+    Date a3 = {2018,5,16},b3 = {2019,1,1};
+    cout << a3.*p3 << "," << b3.*p3 << endl;
     
     return 0;
 }
