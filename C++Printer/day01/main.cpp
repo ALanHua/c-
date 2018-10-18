@@ -64,8 +64,37 @@ namespace andy {
         int year;
         int month;
         int day;
+        
+        void print(){
+            cout << year << '-' << month << '-' << day << endl;
+        }
     };
     
+    void sort(Date a[],int n,int Date::*p){
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (a[i].*p > a[j].*p) {
+                    swap(a[i], a[j]);
+                }
+            }
+        }
+    }
+    
+    void swap(int* p,int* q){
+        int t = *p;
+        *p = *q;
+        *q = t;
+    }
+    void swap(int& p,int& q){
+        int t = p;
+        p = q;
+        q = t;
+    }
+    int& counter(){
+        static int cnt = 0;
+        ++cnt;
+        return cnt;
+    }
 }
 
 /** 强制类型转换
@@ -85,6 +114,18 @@ namespace andy {
 内存管理：c语言/malloc/free/calloc/realloc c++ new 类型 /delete 地址/ delete[] 地址
 new(指定地址)类型，在指定的地方分配内存
  new 失败会throw 抛出异常，可以使用nothrow来
+ */
+/**
+ 引用: 本质上市指针，编译器自动取地址加型号
+      引用必须初始化，用谁初始化它，它就跟谁是同一体
+      引用使用变量本身，而不是复制数据
+特别说明：形参是在调用时由实参初始化
+ */
+
+/**
+ 数组：
+ c++ 风格用vector<类型> 数组名(长度，元素初始值)
+ 可以使用resize 来调整大小
  */
 
 int main(int argc, const char * argv[]) {
@@ -173,6 +214,24 @@ int main(int argc, const char * argv[]) {
     int Date::*p3 = &Date::year;
     Date a3 = {2018,5,16},b3 = {2019,1,1};
     cout << a3.*p3 << "," << b3.*p3 << endl;
+    p3 = &Date::day;
+    cout << a3.*p3 << "," << b3.*p3 << endl;
+    
+    Date t[4] = {
+        a3,b3,{1970,1,1},{2012,12,21}
+    };
+    sort(t, 4, &Date::year);
+    for (int i = 0; i < 4; i++) {
+        t[i].print();
+    }
+    
+    cout << counter() << endl;
+    cout << counter() << endl;
+    cout << counter() << endl;
+    counter() = 0;
+    cout << counter() << endl;
+    cout << counter() << endl;
+    cout << counter() << endl;
     
     return 0;
 }
