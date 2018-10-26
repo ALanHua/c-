@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <string>
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
@@ -145,11 +147,10 @@ public:
     /**
      类型后面跟一个()就是零初始化操作
      */
-    A(int n,T init = T()):a_(new T[n]){
+    A(int n,T init = T()):a_(new T[n]),len_(n){
         for (int i = 0; i < n; i++) {
             a_[i] = init;
         }
-        len_ = n;
         cout << a_ <<"创建数组" << len_ << "个元素" << init << endl;
     }
     /*
@@ -177,7 +178,7 @@ public:
         }
         return a_[idx];
     }
-    int size(){
+    int size() const{
         return len_;
     }
     
@@ -197,7 +198,7 @@ public:
             len_ = newsize;
         }
     }
-    void print() {
+    void print() const{
         for (int i = 0; i < len_; i++) {
             cout << a_[i] << " ";
         }
@@ -208,6 +209,19 @@ public:
             a_[i] = start + step*i;
         }
     }
+    void randfill(){
+        srand((unsigned)time(NULL));
+        for (int i = 0; i < len_; i++) {
+            a_[i] = rand() % 100;
+        }
+    }
+    T next() const{
+        return a_[cur_++ % len_];
+    }
+    /*
+    const 对象内部允许修改的成员
+     */
+    mutable int cur_;
 };
 
 /**
@@ -224,6 +238,17 @@ A fillter(A arr){
     cout << endl;
     return arr;
 }
+
+/*
+ 面向对象的扩展功能
+ 备注: 编译器在编译一个类时，会先扫描类定义(不包含函数体）
+ 之后才扫描类实现（各个成员的函数体，静态成员变量的初始化，
+ 所以类成员函数里可以访问在后面出现的成员
+ 
+ const对象调用的成员函数也要求不会修改成员变量的数据
+ 成员函数可以在参数表后用const来宣称自己不会修改当前对象的数据
+ 称为const成员函数
+ */
 
 int main(int argc, const char * argv[]) {
     
