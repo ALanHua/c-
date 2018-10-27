@@ -139,6 +139,40 @@ private:
     float  salary_;
 };
 
+class A {
+public:
+    A(int n,int v = 0):p_(new int[n]),len_(n){
+        for (int i = 0; i<n; i++) {
+            p_[i] = v;
+        }
+    }
+    
+    ~A(){
+        if(p_){
+            delete [] p_;
+            p_ = NULL;
+        }
+    }
+    
+    void operator ()(int start,int step){
+        for (int i = 0; i < len_; i++) {
+            p_[i] = start + i * step;
+        }
+    }
+    
+    int operator()(){
+        int sum = 0;
+        for (int i = 0; i < len_; i++) {
+            sum += p_[i];
+        }
+        return sum;
+    }
+    
+private:
+    int* p_;
+    int  len_;
+};
+
 /**
  c++中,运算符被被当成函数，允许程序员自己规定运算符如何工作
  方法就是自己定义响应的运算符函数
@@ -168,7 +202,9 @@ private:
  类型转换运算符函数格式
      operator 类型名()
  不写返回值,返回类型跟类型名一致，只能是成员函数
+ ....
  圆括号作为运算符时，参数个数不定
+ 支持圆括号运算符的对象也称为函数对象，因为使用的形式特别像调用函数
  */
 int main(int argc, const char * argv[]) {
     
@@ -190,12 +226,15 @@ int main(int argc, const char * argv[]) {
     
     cout << d[1] << endl;
     
-    P A("Andy",10,8000);
+    P A1("Andy",10,8000);
     
-    string info = A;
-    double money = A;
-    int age = A;
+    string info = A1;
+    double money = A1;
+    int age = A1;
     cout << info << "," << money << "," << age << endl;
     
+    A t(5);
+    t(5,1);
+    cout << t() << endl;
     return 0;
 }
