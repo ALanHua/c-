@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <typeinfo>
 
 using namespace std;
 
@@ -250,7 +251,13 @@ dynamic_cast<子类类型&>(是父类类型对象) ---
 dynamic_cast<子类*>(是父类类型对象地址) ---成功
 则一切顺利，失败则结果为NULL，常常使用这一种
 dynamic_cast 要求有虚函数。
-*/
+-----
+typeid关键字实现类型识别:
+#include<typeinfo>
+typeid(类型或者数据)返回一个type_info&,type_info里
+有一个成语name()表示类型的名字。type_info 支持 === 和 !=
+typeid 也会利用多态进行类型识别
+ */
 class Vehicle{
 public:
 //  如果希望在调用函数时系统根据对象的真实类型
@@ -371,6 +378,11 @@ public:
         // ... 略
     }
 };
+        
+class Person6{
+    
+};
+    
 //
 /**
  const对象只能调用const成员函数
@@ -496,6 +508,18 @@ int main(int argc, const char * argv[]) {
     delete ps;
     delete pt;
     delete pc;
+    cout << "--555---end-----" << endl;
+    int a12;unsigned u;
+    double b2;char c2;
+    Person6 p52;
+    
+    cout << typeid(a12).name() << ","
+    << typeid(u).name() << ","
+    << typeid(b2).name() << ","
+    << typeid(c2).name() << ","
+    << typeid(p52).name() << endl;
+    
+    cout << boolalpha <<(typeid(u) == typeid(a12)) << endl;
     
     return 0;
 }
