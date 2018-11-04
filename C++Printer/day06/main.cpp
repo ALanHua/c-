@@ -30,7 +30,32 @@ using namespace std;
  string 类 c++ 风格的字符串类
  构造:string(const string& s);
      string(int n,char c);
- 运算符:<<,>>,=,+=,+,[]
+ 运算符:<<,>>,=,+=,+,[] ...
+ 字串:substr(int start,int n);返回从start 开始的n个字符
+ 组成的一个字符串的新对象，源对象保持不变。
+ 追加：append(int n,char c)在末尾追加n个字符
+ 查找：find(char c,int start =0)
+      find(const char* s,int start=0)
+      find(const string& s,int start=0)
+      rfind ...
+      其中可以用string::npos表示末尾
+      find_first_of(字符串，inr start=0)，从start位置
+      开始找在字符串s中有存在的字符。
+      find_first_of("+")表示在字符串中找第一运算符。
+ 删除： erase(int start=0,int n= string::nops)
+ 替换： replace(int star,int n,字符串）
+        replace(int star,int n.int n2,char c2）
+ 插入：insert(int pos,int n,int c)
+ 航输入：gets / fgets / scanf("%[^\n]")
+        string s,getline(cin,s)
+ ...............
+ 异常处理：
+ 捕获异常：
+ try{
+ 
+ }catch(类型 e){
+ 
+ }
  */
 class Graph {// 抽象类
 public:
@@ -160,6 +185,8 @@ public:
     virtual void dosomething(){
     }
 };
+
+
 
 // 纯虚函数:没有必要或者不应该有函数体的虚函数，用 “=0”
 int main(int argc, const char * argv[]) {
