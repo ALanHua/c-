@@ -10,6 +10,7 @@
 #include <string>
 #include <exception>
 #include <new>
+#include <cctype>
 using namespace std;
 
 /**
@@ -34,6 +35,22 @@ using namespace std;
  定义子类覆盖父类的虚函数时，异常声明的内容不能超出父类中
  这个函数的异常声明内容
  标准库中国b抛出的异常类型都是exception类的子类
+ 
+ 3,I/0 input/output
+ 标准输入标准输出对象
+ cin/cout/cerr/clog==cerr一样
+ 
+                 ios
+            /                  \
+        istream                    ostream
+    /            |     \       /         |      \
+istringstream  ifstream   iostream     ofstream ostringstream
+                            |
+                            fstream
+ 
+ 
+ ws 去掉前导空白字符（空格，制表符，换行，回车符，页符，垂直
+ 制表符），hex,dec,oct 表示几进制
  */
 
 
@@ -161,6 +178,16 @@ private:
     int len_;
 };
 
+istream& func(istream& i)
+{
+    char c;
+    do {
+        i>>c;
+    } while (!isdigit(c));
+    i.putback(c);
+    return i;
+}
+
 int main(int argc, const char * argv[]) {
 #if 0
 //    set_terminate(beforedie);
@@ -186,13 +213,25 @@ int main(int argc, const char * argv[]) {
     }
     
     cout << "oh yeah" << endl;
-#endif
     A x(10);
     x[0] = 5;
     x[3] = 10;
     x[8] = 20;
     cout << x[3] * x[0] * x[8] << endl;
     cout << x[-5] << endl;
+#endif
+    int n = 1;
+//    func(cin);
+    cin >> func >> n;
+    cout << "n =" << n << endl;
+    
+    cout << 123.0 << endl;
+    cout.setf(ios::showpoint);
+    cout << 123.0 << endl;
+    cout.setf(ios::scientific | ios::uppercase);
+    cout << 123.0 << endl;
+    cout.unsetf(ios::scientific | ios::showpoint);
+    cout << 123.0 << endl;
     
     return 0;
 }
