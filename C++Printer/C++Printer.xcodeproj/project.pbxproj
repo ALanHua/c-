@@ -113,6 +113,7 @@
 		B8660BF12191DB65005A4B7C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B86928762121DE5D0066C2CF /* C++Printer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "C++Printer"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B86928792121DE5D0066C2CF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B87198A42191EF0D007E58B9 /* print.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = print.h; sourceTree = "<group>"; };
 		B8FF5605217628C00054F133 /* day01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = day01; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8FF560C217628F90054F133 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B8FF5612217ACD370054F133 /* day02 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = day02; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -218,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				B8660BF12191DB65005A4B7C /* main.cpp */,
+				B87198A42191EF0D007E58B9 /* print.h */,
 			);
 			path = day08;
 			sourceTree = "<group>";

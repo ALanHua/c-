@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include "print.h"
 
 using namespace std;
 
@@ -50,7 +51,6 @@ void sort(string a[],int n){
         }
     }
 }
-#endif
 // 泛型编程 解决上面的痛点
 template <typename T>
 void sort(T a[],int n){
@@ -62,6 +62,8 @@ void sort(T a[],int n){
         }
     }
 }
+#endif
+
 /**
  template <typename T> 模板头 T是模板形参
  编译在编译时会确定模板形参具体是那种类型，这个过程
@@ -78,13 +80,6 @@ void sort(T a[],int n){
  typename 也可以换成 class含义相同，但不建议使用
  
  */
-template <typename T>
-void print(T a[],int n) {
-    for (int i = 0; i < n; i++) {
-        cout << a[i] << " ";
-    }
-    cout << endl;
-}
 
 // 模板栈类
 // 这个类不完善，只为测试类模板
@@ -163,10 +158,10 @@ int main(int argc, const char * argv[]) {
     double ad[5] = {5.5,3.3,9.9,6.6,2.2};
     string as[4] = {"good","morning","dear","friends"};
     
-    sort(ai, 6);  print(ai,6);
-    sort(ac, 5);  print(ac,5);
-    sort(ad, 5);  print(ad,5);
-    sort(as, 4);  print(as,4);
+    Andy::sort(ai, 6);  Andy::print(ai,6);
+    Andy::sort(ac, 5);  Andy::print(ac,5);
+    Andy::sort(ad, 5);  Andy::print(ad,5);
+    Andy::sort(as, 4);  Andy::print(as,4);
     
 //////////////////////////////////////////////////
     Stack<int> si;   // int 模板的实参
