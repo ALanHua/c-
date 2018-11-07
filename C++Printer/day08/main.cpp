@@ -214,6 +214,23 @@ struct Pair<const char*,V> {
     }
 };
 
+template <>
+struct Pair<const char*,const char*> {
+    string     first;
+    string     second;
+    void show(){
+        cout << "cstr cstr(" <<  first << ","
+        << second << ")" << endl;
+    }
+};
+// 函数模板
+template <typename K,typename V>
+Pair<K,V>makepair(K x,V y)
+{
+    Pair<K,V> pkv = {x,y};
+    return pkv;
+}
+
 int main(int argc, const char * argv[]) {
     int ai[6] = {8,1,6,9,3,5};
     char ac[5] = {'d','x','s','a','m'};
@@ -264,9 +281,18 @@ int main(int argc, const char * argv[]) {
     Pair<int,double> pid = {3, 5.5};
     Pair<int,const char*> pic = {10, "hello"};
     Pair<const char*,double> pcd = {"hello",1.1};
+    Pair<const char*,const char*> pcc = {"hello","world"};
     pid.show();
     pic.show();
     pcd.show();
+    pcc.show();
+    
+    cout << "--------下面解决上面的痛点-----------" << endl;
+    makepair(12345, "$").show();
+    makepair(12345, 12.4).show();
+    makepair("$", 12.4).show();
+    makepair("adny", "rich").show();
+    
     
     return 0;
 }
