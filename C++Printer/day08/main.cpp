@@ -79,6 +79,12 @@ void sort(T a[],int n){
  
  typename 也可以换成 class含义相同，但不建议使用
  
+ 特殊化有几种层次
+ 偏向化:带某种偏向的特殊化，比如偏向指针的，偏向数组...
+ 全特化:模板头的尖括号是空的，全部模板都确定下来了，类似于普通的
+     函数和类,但只有在程序中某处z进行了实例化在最终的可
+     执行文件中产生代码。
+ 部分特化:模板的部分形参确定下来了。
  */
 
 // 模板栈类
@@ -152,6 +158,62 @@ private:
     int cnt_;
 };
 
+// 模板也可以重载
+template <typename T>
+void print1(T& d)
+{
+    cout << d << " " << endl;
+}
+template <typename T>
+void print1(const T* p)
+{
+    print1(*p);
+}
+
+template <typename T,int N>
+void print1(T(&a)[N])
+{
+    for (int i = 0; i < N; i++) {
+        print1(a[i]);
+    }
+}
+
+template <>
+void print1(const char* s) //对于C风格的特殊化
+{
+    cout << s << endl;
+}
+
+template <typename K,typename V>
+struct Pair {
+    K   first;
+    V   second;
+    void show(){
+        cout << "nomal(" <<  first << ","
+        << second << ")" << endl;
+    }
+};
+
+template <typename K>
+struct Pair<K,const char*> {
+    K        first;
+    string   second;
+    void show(){
+        cout << "2cstr(" <<  first << ","
+        << second << ")" << endl;
+    }
+};
+
+template <typename V>
+struct Pair<const char*,V> {
+    string     first;
+    V          second;
+    void show(){
+        cout << "1cstr(" <<  first << ","
+        << second << ")" << endl;
+    }
+};
+
 int main(int argc, const char * argv[]) {
     int ai[6] = {8,1,6,9,3,5};
     char ac[5] = {'d','x','s','a','m'};
@@ -187,6 +249,24 @@ int main(int argc, const char * argv[]) {
         ss.pop();
     }
     cout << endl;
+    
+    int x = 123;
+    int a[5] = {1,2,3,4,5};
+    int b[3][2] = {11,22,33,44,55,66};
+    const char* p = "andy";
+    print1(x);
+    print1(&x);
+//    print1<int,5>(a);
+    print1(a);
+    print1(b);
+    print1(p);
+    
+    Pair<int,double> pid = {3, 5.5};
+    Pair<int,const char*> pic = {10, "hello"};
+    Pair<const char*,double> pcd = {"hello",1.1};
+    pid.show();
+    pic.show();
+    pcd.show();
     
     return 0;
 }
