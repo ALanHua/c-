@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <cstring>
 #include "print.h"
 
 using namespace std;
@@ -85,6 +86,9 @@ void sort(T a[],int n){
      函数和类,但只有在程序中某处z进行了实例化在最终的可
      执行文件中产生代码。
  部分特化:模板的部分形参确定下来了。
+ 
+ 成员（友元)函数模板，跟类模板不要用同样的形参名。
+ 类模板形参可以有默认值，一批默认值的形参靠右
  */
 
 // 模板栈类
@@ -192,6 +196,25 @@ struct Pair {
         cout << "nomal(" <<  first << ","
         << second << ")" << endl;
     }
+    
+    Pair():first(),second(){}
+//    模板狗扎函数
+    template <typename F,typename Q>
+    Pair(const F& x,const Q& y):first(x),second(y){
+    
+    }
+//  赋值运算
+    template <typename F,typename Q>
+    Pair& operator =(const Pair<F,Q>& p){
+        first  = p.first;
+        second = p.second;
+        return *this;
+    }
+    
+    friend ostream& operator << (ostream& o,const Pair& p){
+        o << "(" << p.first << "," << p.second << ")";
+        return o;
+    }
 };
 
 template <typename K>
@@ -222,6 +245,24 @@ struct Pair<const char*,const char*> {
         cout << "cstr cstr(" <<  first << ","
         << second << ")" << endl;
     }
+    Pair():first(),second(){}
+    //    模板狗扎函数
+    template <typename F,typename Q>
+    Pair(const F& x,const Q& y):first(x),second(y){
+        
+    }
+    //  赋值运算
+    template <typename F,typename Q>
+    Pair& operator =(const Pair<F,Q>& p){
+        first  = p.first;
+        second = p.second;
+        return *this;
+    }
+    
+    friend ostream& operator << (ostream& o,const Pair& p){
+        o << "(" << p.first << "," << p.second << ")";
+        return o;
+    }
 };
 // 函数模板
 template <typename K,typename V>
@@ -229,6 +270,63 @@ Pair<K,V>makepair(K x,V y)
 {
     Pair<K,V> pkv = {x,y};
     return pkv;
+}
+// 新参默认值
+template <typename T = int,int N = 10>
+class Array {
+//  友元函数模板
+    template <typename A,int M>
+    friend ostream& operator<< (ostream& o,const Array<A,M>& x);
+private:
+    T a_[N];
+public:
+    T& operator[](int index){
+        //  越界检查略
+        return a_[index];
+    }
+// 重载
+   const T& operator[](int index) const{
+        //  越界检查略
+        return a_[index];
+    }
+    
+    void fill(T start,const T& step){
+        for (int i = 0; i < N; i++,start += step) {
+            a_[i] = start ;
+        }
+    }
+    
+};
+
+template <typename T,int N>
+ostream& operator<< (ostream& o,const Array<T,N>& x)
+{
+    o << "[";
+    for (int i = 0; i < N; i++) {
+        o << x[i] << " ";
+    }
+    o << "]";
+    
+    return o;
+}
+
+template <typename T>
+T* find(T a[],int n,T d) {
+    for (int i = 0; i < n; i++) {
+        if (a[i] == d) {
+            return a+i;
+        }
+    }
+    return NULL;
+}
+template <>
+const char** find(const char* a[],int n,const char* d) {
+    for (int i = 0; i < n; i++) {
+        if (strcmp(a[i], d) == 0) {
+            return a+i;
+        }
+    }
+    return NULL;
 }
 
 int main(int argc, const char * argv[]) {
@@ -293,6 +391,26 @@ int main(int argc, const char * argv[]) {
     makepair("$", 12.4).show();
     makepair("adny", "rich").show();
     
+    cout << "------------------" << endl;
+    Pair<int, double> pid1(1,2.3);
+    Pair<char, int> pci('a',45);
+//    cout.setf(ios::showpoint);
+    cout << pid1 << endl;
+    pid1 = pci;
+    cout << pid1 << endl;
+    
+    Pair<const char*, const char*> pcc1("aa","bb");
+    Pair<string, string> pss;
+    pss = pcc1;
+    cout << pss << pcc1 << endl;
+    
+    Array<int, 5> arr;
+    arr.fill(11, 2);
+    cout << arr << endl;
+    
+    Array<double> arr2;
+    arr2.fill(1.2, 1);
+    cout << arr2 << endl;
     
     return 0;
 }
