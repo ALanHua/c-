@@ -44,7 +44,12 @@ using namespace std;
     容器会自己保存一份数据，自定义类型数据保存在容器中应该支持ck拷贝构造
     和赋值运算符
  序列式容器
-    vector   向量
+    vector   向量(动态数组，可以取代原始数组)
+    个性：[] 下标 at(i)和[i] 一样但越界是会抛出异常
+    capacity()当前容量，reserve(n)事先分配足以存放
+    n个元素的空间从而避免频繁重新分配和是否空间
+    迭代器在插入或者删除数据之后，应该重新取得迭代器，它是随机迭代器。
+    当然也是双向迭代器。
     deque    双端队列
     list     链表
  共性：
@@ -197,9 +202,20 @@ int main(int argc, const char * argv[]) {
     print(v3.begin(), v3.end());
     v3.push_back('9');
     print(v3.begin(), v3.end());
-    
     cout << "front " << v3.front() << " back " << v3.back() <<endl;
+    vector<int> vi(5);// 5个0
+    vi.resize(8,1);// 调整为8个元素，新增3个1
+    vi[3] = 123;
+    vi.at(5) = 456;
+    cout << vi[3] << "," << vi.at(5) << endl;
+    cout << vi.capacity() << "," << vi.size()<< endl;
+    vi.push_back(8);
+    cout << vi.capacity() << "," << vi.size()<< endl;
+    vi.push_back(9);
+    cout << vi.capacity() << "," << vi.size()<< endl;
     
+    vi.push_back(100);
+    cout << vi.capacity() << "," << vi.size()<< endl;
     
     return 0;
 }
