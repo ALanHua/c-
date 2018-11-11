@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <deque>
+#include <list>
+#include <algorithm>
 
 // 测试简单，正式z程序不建议在这里使用全局
 using namespace std;
@@ -39,10 +41,16 @@ using namespace std;
     接口：begin()返回指向第一个元素的迭代器，end()返回指向最后一个的迭代器
     这倆构成的区间正好是容器中的所有元素，rbegin()返回指向反向的第一个元素
     rend()返回反向的最后一个元素
+    容器会自己保存一份数据，自定义类型数据保存在容器中应该支持ck拷贝构造
+    和赋值运算符
  序列式容器
     vector   向量
     deque    双端队列
     list     链表
+ 共性：
+    构造：(元素个数，初始值=零初始化）
+    调整： resize(新的大小，初始值=零初始化)
+    插入：insert(pos，n,elem),insert(pos,beg,end) 
  关联时容器
     set      数据集
     multiset 多重数据集
@@ -129,11 +137,34 @@ int main(int argc, const char * argv[]) {
     cout << "size " << dcc.size() << endl;
     cout << "max_size " << dcc.max_size() << endl;
     
+    deque<const char*>::reverse_iterator ri;
+    
+    for (ri = dcc.rbegin(); ri != dcc.rend(); ri++) {
+         cout << *ri << ",";
+    }
+    cout << endl;
+    
     while (!dcc.empty()) {
         cout << *dcc.begin() << endl;
         dcc.erase(dcc.begin());
     }
     cout << "size " << dcc.size() << endl;
+    cout << "-------区间------" << endl;
+    int a[10] = {8,6,9,1,5,2,7,3,6,5};
+    list<int> li(a,a+6);
+    list<int>::iterator it2 = li.begin(),ie2 = li.end();
+    sort(a, a+10);
+    for (int i = 0 ; i < 10;i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+    
+    while (it2 != ie2) {
+        cout << *it2++ << ",";
+    }
+    cout << endl;
+    
+    
     
     return 0;
 }
