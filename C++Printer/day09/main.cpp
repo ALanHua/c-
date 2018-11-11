@@ -10,7 +10,7 @@
 #include <deque>
 #include <list>
 #include <algorithm>
-
+#include <vector>
 // 测试简单，正式z程序不建议在这里使用全局
 using namespace std;
 /**
@@ -50,7 +50,12 @@ using namespace std;
  共性：
     构造：(元素个数，初始值=零初始化）
     调整： resize(新的大小，初始值=零初始化)
-    插入：insert(pos，n,elem),insert(pos,beg,end) 
+    插入：insert(pos，n,elem),insert(pos,beg,end)
+    重设：assign(n,elem),assign(beg,end)
+        丢弃容器中原有数据，重设n个elem或者重设为区间[beg,end)的数据
+        赋值的语义
+    头尾：front(),back(),push_back(elem)在末尾追加数据
+ 
  关联时容器
     set      数据集
     multiset 多重数据集
@@ -107,7 +112,13 @@ public:
     }
 };
 
-
+template <typename P>
+void print(P beg,P end) {
+    while (beg != end) {
+        cout << *beg++ << " ";
+    }
+    cout << endl;
+}
 
 
 int main(int argc, const char * argv[]) {
@@ -163,8 +174,33 @@ int main(int argc, const char * argv[]) {
         cout << *it2++ << ",";
     }
     cout << endl;
+    cout << "-------序列------" << endl;
+    const char* we = "smartwater";
+    vector<char> vc(we,we+strlen(we));
+    print(vc.begin(), vc.end());
+    print(vc.rbegin(), vc.rend());
+    vector<char> v2 = vc; // 复制vc
+    vc.insert(++++++vc.begin(), '0');// 容器共性
+    vc.insert(++++++vc.begin(), 2,'2');// 序列共性
+    print(vc.begin(), vc.end());
+    const char* s = "20";
+    print(v2.begin(), v2.end());
+    v2.insert(++++++v2.begin(), s,s + strlen(s));
+    print(v2.begin(), v2.end());
+    vector<char> v3(5,'*');
+    print(v3.begin(), v3.end());
+    v3.resize(8,'$');// 旧值还在
+    print(v3.begin(), v3.end());
+    v3.assign(6, '!');// 旧值不在
+    print(v3.begin(), v3.end());
+    v3.assign(++v2.begin(), --v2.end());
+    print(v3.begin(), v3.end());
+    v3.push_back('9');
+    print(v3.begin(), v3.end());
     
+    cout << "front " << v3.front() << " back " << v3.back() <<endl;
     
     
     return 0;
 }
+
