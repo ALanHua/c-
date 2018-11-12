@@ -11,6 +11,9 @@
 #include <list>
 #include <algorithm>
 #include <vector>
+#include <stack>
+#include <queue>
+
 // 测试简单，正式z程序不建议在这里使用全局
 using namespace std;
 /**
@@ -50,8 +53,16 @@ using namespace std;
     n个元素的空间从而避免频繁重新分配和是否空间
     迭代器在插入或者删除数据之后，应该重新取得迭代器，它是随机迭代器。
     当然也是双向迭代器。
+    容量不足，翻一番
     deque    双端队列
     list     链表
+    个性：push_front(elem),pop_front(),remove(elem)删除等于elem的所有元素
+    remove_if(bool functor(T))条件删除
+    unique() 删除所有相邻的重复元素
+    sort() 排序(用<比较) sort(bool myless(T,T))
+    reverse()把链表逆序，splice(pos,list2,pos)转移数据
+    splice(pos,list2,beg,end)a把list2中的全部，一个或者一段元素转移过来
+    merge(list2) 把list2里面的数据归并过来(前提两个都是排好序的)
  共性：
     构造：(元素个数，初始值=零初始化）
     调整： resize(新的大小，初始值=零初始化)
@@ -125,6 +136,10 @@ void print(P beg,P end) {
     cout << endl;
 }
 
+bool odd(int d)
+{
+    return d & 1;
+}
 
 int main(int argc, const char * argv[]) {
     
@@ -166,7 +181,7 @@ int main(int argc, const char * argv[]) {
     }
     cout << "size " << dcc.size() << endl;
     cout << "-------区间------" << endl;
-    int a[10] = {8,6,9,1,5,2,7,3,6,5};
+    int a[10] = {8,6,9,7,5,2,7,3,7,7};
     list<int> li(a,a+6);
     list<int>::iterator it2 = li.begin(),ie2 = li.end();
     sort(a, a+10);
@@ -216,6 +231,69 @@ int main(int argc, const char * argv[]) {
     
     vi.push_back(100);
     cout << vi.capacity() << "," << vi.size()<< endl;
+    cout << "-------双端队列------" << endl;
+    deque<string> task;
+    task.push_back("起床");
+    task.push_back("洗刷");
+    task.push_back("吃饭");
+    task.push_back("上班");
+    //  显示任务列表
+    size_t size = task.size();
+    for (int i = 0; i < size; i++) {
+        cout << task[i] << " ==> ";
+    }
+    cout << endl;
+    
+    while (!task.empty()) {
+        cout << task.front();
+        task.pop_front();
+        cout << " 完成" << endl;
+    }
+    cout << "-------list------" << endl;
+    
+    list<int> lis(a,a+10);
+    print(lis.begin(), lis.end());
+    lis.unique();// 只去掉相邻的元素
+    print(lis.begin(), lis.end());
+    lis.remove(7);
+    print(lis.begin(), lis.end());
+    lis.sort();
+    lis.reverse();
+    print(lis.begin(), lis.end());
+    lis.remove_if(odd);
+    print(lis.begin(), lis.end());
+    lis.push_front(13);
+    lis.push_back(34);
+    lis.insert(++lis.begin(),2,100);
+    print(lis.begin(), lis.end());
+    
+    int b[5] = {3,6,2,9,7};
+    list<int> l2(b,b+5);
+    lis.splice(----lis.end(),l2,++l2.begin(),--l2.end());
+    print(lis.begin(), lis.end());
+    print(l2.begin(), l2.end());
+    l2.sort();
+    lis.sort();
+    lis.merge(l2);
+    print(lis.begin(), lis.end());
+    print(l2.begin(), l2.end());
+    
+    int a1[5] = {3,8,6,9,2};
+    stack<int> si1;
+    queue<int> qi1;
+    priority_queue<int> pi1;// 默认小于比较
+    
+    for (int i = 0; i < 5; i++) {
+        si1.push(a1[i]);
+        qi1.push(a1[i]);
+        pi1.push(a1[i]);
+    }
+    
+    while (!si1.empty()) {
+        cout << si1.top() << '\t';si1.pop();
+        cout << qi1.front() << '\t';qi1.pop();
+        cout << pi1.top() << '\n';pi1.pop();
+    }
     
     return 0;
 }
