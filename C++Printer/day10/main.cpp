@@ -7,6 +7,8 @@
 //
 
 #include <iostream>
+#include <array>
+
 using namespace std;
 
 /**
@@ -156,6 +158,34 @@ public:
     using MyBaseClass::getName;
 };
 
+// enum class 类型安全
+enum class Day {
+    Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+};
+
+enum class Day2 {
+    Monday,                 Mon = Monday,
+    Tuesday   = Monday+2,   Tues = Tuesday,
+    Wednesday = Tuesday+2,  Wed = Wednesday,
+    Thursday  = Wednesday+2,Thurs = Thursday,
+    Friday    = Thursday+2, Fri = Friday,
+    Saturday  = Friday+2,   Sat = Saturday,
+    Sunday    = Saturday+2, Sun = Sunday
+};
+
+enum class Punctuation: char {
+    Comma       = ',',
+    Exclamation = '!',
+    Question    ='?'
+};
+    
+// Aliases for Data Types 取别名
+using BigOnes = unsigned long long;
+// typedef using BigOnes = unsigned long long; 和上面等价
+
+// 全局变量和局部变量同名时如何访问
+long count1{9999};
+    
 int main(int argc, const char * argv[]) {
 
     double A = mathmatics().sq(3.14);
@@ -163,6 +193,43 @@ int main(int argc, const char * argv[]) {
     
     cout << A << "," << B  << endl;
 
+    cout << static_cast<int>(Day::Wednesday) << endl;
+    cout << static_cast<int>(Day2::Wednesday) << endl;
+    cout << static_cast<char>(Punctuation::Comma) << endl;
+    
+    BigOnes mynum {100};
+    cout << mynum << endl;
+    
+    long count1{10};
+    cout << count1 << "," << ::count1 << endl;
+    
+    char letter {'A'};
+    
+    if (isalpha(letter)) {
+        cout << tolower(letter) << endl;
+        printf("%c\n",tolower(letter));
+    }
+    int values[] {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+    
+    cout << "There are " << sizeof(values) / sizeof(values[0]) << endl;
+    // c++ 17 之后支持这种操作
+    cout << std::size(values) << endl;
+    
+    // for in
+    int total {};
+    for (auto x : values){
+        total += x;
+    }
+    
+    cout << total << endl;
+    
+    // 使用容器
+    array<double, 100> values1;
+    values1.fill(3.14);
+    cout << values1[1] << "," << values1[2] << endl;
+    //  vector
+    
+    
     
     return 0;
 }
