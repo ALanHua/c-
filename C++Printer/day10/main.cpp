@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <vector>
 #include <array>
 
 using namespace std;
@@ -228,8 +229,24 @@ int main(int argc, const char * argv[]) {
     values1.fill(3.14);
     cout << values1[1] << "," << values1[2] << endl;
     //  vector
-    
-    
+    // 20 个 99
+    vector<long> numbers2(20,90L);
+    for (int i = 0; i < numbers2.size(); i++) {
+        cout << numbers2[i] << " ";
+    }
+    cout << endl;
+    // 重新初始化数组
+    numbers2.assign(5,100L);
+    for (int i = 0; i < numbers2.size(); i++) {
+        cout << numbers2[i] << " ";
+    }
+    cout << endl;
+    // 初始化含有两个元素的数组
+    numbers2.assign({30,40});
+    for (int i = 0; i < numbers2.size(); i++) {
+        cout << numbers2[i] << " ";
+    }
+    cout << endl;
     
     return 0;
 }
