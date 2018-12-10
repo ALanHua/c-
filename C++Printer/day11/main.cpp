@@ -73,6 +73,27 @@ int main(int argc, const char * argv[]) {
         }
         cout << endl;
     }
+    // 引用 就是某个类型的别名
+    double data {3.5};
+    double& rdata {data};
+    cout << data << "," << rdata << endl;
+    cout << &data << "," << &rdata << endl;
+    rdata += 2.5;
+    cout << data << "," << rdata << endl;
+    cout << &data << "," << &rdata << endl;
+    
+    const double F2C {5.0 / 9.0};
+    double temperatures[] {45.5, 50.0, 48.2, 57.0, 63.8};
+    
+    for (auto& t : temperatures) {
+        t = (t - 32.0) * F2C;
+    }
+    
+    for (auto t: temperatures) {
+        cout << t << " ";
+    }
+    cout << endl;
+    
     
     return 0;
 }
