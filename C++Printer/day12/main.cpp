@@ -71,7 +71,74 @@ int main(int argc, const char * argv[]) {
     }
     cout << endl;
     // 字符串比较
+    string word1 {"A jackhammer"};
+    string word2 {"jack"};
     
+    if (word1 < word2) {
+        std::cout << word1 << " comes before " << word2 << '.' << std::endl;
+    }else {
+        std::cout << word2 << " comes before " << word1 << '.' << std::endl;
+    }
+    // 取下标2--word2.length()范围内word1的字串和word2比较
+    int resultCopare = {word1.compare(2,word2.length(),word2)};
+    cout << resultCopare << endl;
+    // 寻找word3在text中的所有起始下b标
+    string text {"Peter Piper picked a peck of pickled pepper."};
+    string word3 {"pick"};
+    for (size_t i{}; i < text.length() - word3.length() + 1; ++i) {
+        if (text.compare(i, word3.length(), word3) == 0) {
+           cout << word3 << " starting at index " << i << endl;
+        }
+    }
+    // 拿一个字符串的子串和y另一个字符串的子串比较
+    string phrase2 {"Got to pick a pocket or two."};
+    for (size_t i{}; i < text.length() - 3; ++i) {
+        if (text.compare(i, 4,phrase2,7,4) == 0) {
+            cout << i << " "<< phrase2.substr(7,4) << endl;
+        }
+    }
+    // 查找子串
+    string sentence2 {"Manners maketh man"};
+    string word5 {"man"};
+    cout << "-----------------" << endl;
+    cout << sentence2.find(word5) << endl;
+    cout << sentence2.find("an") << endl;
+    // std::string::npos 等于 2的64次方 - 1
+    cout << sentence2.find("x") << ","<< string::npos << endl;
+    if (sentence2.find("x") == string::npos) {
+       std::cout << "Character not found" << std::endl;
+    }
+    // 查找子串从指定下标位置开始查找
+    cout << sentence2.find("an",1) << endl;
+    cout << sentence2.find("an",3) << endl;
+    // 从小标为1开始查找"akat"的前2个字符组成的子串
+    cout << sentence2.find("akat",1,2) << endl;
+    cout << sentence2.find("akat",1,3) << endl;
+    // 搜索任意字符中的任意一个
+    string text2 {"Smith, where Jones had had \"had had\", had had \"had\"."
+        " \"Had had\" had had the examiners' approval."};
+    string separators {" ,.\""};
+    cout << text2.find_first_of(separators) << endl;
+    cout << text2.find_first_of("AaEeIiOoUu") << endl;
+    cout << text2.find_last_of("AaEeIiOoUu") << endl;
+    cout << text2.find_first_not_of("AaEeIiOoUu") << endl;
+    cout << text2.find_last_not_of("AaEeIiOoUu") << endl;
+    // 反向搜索
+    cout << sentence2.rfind(word5) << endl;
+    // 字符串的修改
+    string phrase3 {"We can insert a string."};
+    string words {"a string into "};
+    phrase3.insert(14,words);
+    cout << phrase3 << endl;
+    // 插入字符串的子串words 下标为8的后面5个字符
+    phrase3.insert(0,words,9,5);
+    cout << phrase3 << endl;
+    // 插入字符串的前5个字符
+    phrase3.insert(0,"into somthing",5);
+    cout << phrase3 << endl;
+    // 插入7个“*”字符
+    phrase3.insert(0,7,'*');
+    cout << phrase3 << endl;
     
     
     return 0;
