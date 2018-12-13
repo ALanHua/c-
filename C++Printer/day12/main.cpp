@@ -139,7 +139,35 @@ int main(int argc, const char * argv[]) {
     // 插入7个“*”字符
     phrase3.insert(0,7,'*');
     cout << phrase3 << endl;
+    // 替换字符串,从哪个小标13开始的后面5个字符组成的子串
+    string text3 {"Smith, where Jones had had \"had had\", had had \"had\"."};
+    text3.replace(13, 5,"Gruntfuttock");
+    cout << text3 << endl;
     
+    const string separators2 {" ,;:.\"!'\n"};
+    size_t start {text3.find("Gruntfuttock")};
+    size_t end {text3.find_first_of(separators2,start + 1)};
+    text3.replace(start, end -start, "andy");
+    cout << text3 << endl;
+    // 移除字符
+    text3.erase(0, 6);
+    cout << text3 << endl;
+    // 在移除除了前面的5个字符
+    text3.erase(5);
+    cout << text3 << endl;
+    // 移除所有
+//    text3.erase();
+    text3.clear();
+    cout << text3 << endl;
+    // 字符串转换成数字
+    string s {"123"};
+    cout << stoi(s) << endl;
+    // 宽字符
+    wstring quote{L"The tigers of wrath are wiser than the horses of instruction."};
+    wcout << quote << endl;
+    string s2(u8"字符串");
+    cout << s2 << endl;
+    cout << s2.length() << endl;
     
     return 0;
 }
