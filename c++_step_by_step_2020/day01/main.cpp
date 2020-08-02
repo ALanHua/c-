@@ -78,6 +78,14 @@ void fun2(int v1,void(*p)(int) = display){
 extern "C" void func3(void){
 }
 
+// inline 内敛函数
+// 编译器将函数调用展开成函数体代码
+// 函数代码体积不大，频繁调用的函数最好定义成内敛函数
+// 非内敛函数调用需要开辟栈空间，结束回收栈空间
+// 递归函数不会是内核函数即使添加inline标志
+inline int sum3(int v1,int v2){
+    return v1 + v2;
+}
 
 int main(int argc, const char * argv[]) {
     // insert code here...
