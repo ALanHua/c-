@@ -7,6 +7,8 @@
 //
 
 #include <iostream>
+ #include "math.h"
+
 using namespace std;
 
 void test(void){
@@ -69,6 +71,13 @@ void fun2(int v1,void(*p)(int) = display){
     p(v1);
 }
 
+// extern "C"
+// 表示需要使用c语言的方式编译代码
+// 函数声明需要加，实现不需要加
+extern "C" void func3(void){
+}
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     
@@ -81,5 +90,8 @@ int main(int argc, const char * argv[]) {
     display(10.0);
     cout << sum2() << endl;
     fun2(20);
+    
+    cout << add(10,100) << endl;
+    
     return 0;
 }
