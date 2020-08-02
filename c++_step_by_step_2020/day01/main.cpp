@@ -87,6 +87,26 @@ inline int sum3(int v1,int v2){
     return v1 + v2;
 }
 
+#define add2(v1,v2)  ((v1) + (v2))
+
+struct date {
+    int year;
+    int month;
+    int day;
+};
+
+/*
+ const 修饰的是它右边的内容
+ int age = 10;
+ 
+ 1，const int* p1 = &age;  *p1 是常量 p1不是常量
+ 2，int const* p2 = &age;  *p2 是常量 p2不是常量
+ 3，int* const p3 = &age;  p3是常量 ，*p3不是常量
+ 4，const int* const p4 = &age; p4是常量 ，*p4不是常量
+ 5，int const * const p5 = &age; p5是常量 ，*p5不是常量
+ 
+ */
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     
@@ -101,6 +121,22 @@ int main(int argc, const char * argv[]) {
     fun2(20);
     
     cout << add(10,100) << endl;
+    cout << add2(10,100) << endl;
+//    表达式
+    int a = 1;
+    int b = 2;
+    (a=b) = 4;
+    cout << a << " " << b << endl;
+    (a >b ? a : b) =5;
+    cout << a << " " << b << endl;
+    
+    date d = {2020,8,1};
+    date d2 = {2020,8,1};
+    d.year = 2019;
+    d = d2;
+    cout << d.year << endl;
+    
+
     
     return 0;
 }
