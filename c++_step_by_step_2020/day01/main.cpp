@@ -7,7 +7,8 @@
 //
 
 #include <iostream>
- #include "math.h"
+#include "math.h"
+#include "test.h"
 
 using namespace std;
 
