@@ -59,7 +59,14 @@ struct student {
  ---
  R开头的64bit
  E开头的32bit
- 
+ -----
+ mov dword ptr[ebp-8],3
+ -----
+ 汇编指令
+ mov dst,src 将src赋值给dst，类似 dst = src
+ [地址值] 中括号里面的都是地址值
+ word ptr 两个字节
+ dword ptr 四个字节
  */
 
 int main(int argc, const char * argv[]) {
@@ -68,8 +75,14 @@ int main(int argc, const char * argv[]) {
     int b = 20;
     swap2(a,b);
     cout << a << " " << b << endl;
-    
     cout << sizeof(student) << endl;
+    //  内敛汇编
+    __asm {
+        mov eax,10
+        mov rax,1122334455667788H
+    }
 
+    
+    
     return 0;
 }
