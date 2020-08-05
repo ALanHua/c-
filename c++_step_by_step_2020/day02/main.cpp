@@ -15,6 +15,8 @@ using namespace std;
 2，定义是就必须初始化,不能改变指向
 3, 比指针更安全
 4, 引用的本质就是指针，只是编译器弱化这个
+5, 不存在引用的引用
+6, 不存在数组引用
 */
 void testRef(void)
 {
@@ -89,6 +91,12 @@ struct student {
 
  */
 
+struct Date {
+    int year;
+    int month;
+    int day;
+};
+
 int main(int argc, const char * argv[]) {
     
     int a = 10;
@@ -101,8 +109,27 @@ int main(int argc, const char * argv[]) {
         mov eax,10
         mov rax,1122334455667788H
     }
-
     
+    Date d = {2020,8,5};
+    Date& ref = d;
+    cout << ref.year << endl;
+
+    int age = 40;
+    int* p = &age;
+    int* &refp = p;
+    cout << *refp << endl;
+    int height = 30;
+    refp = &height;
+    cout << *refp << endl;
+    
+    int array[] = {1,2,3};
+    int (&refArray)[3] = array;
+    refArray[0] = 10;
+    cout << array[0] << endl;
+    //  指针数组
+    int* arr1[3] = {p,p,p};
+    //  数组指针
+    int(*arr2)[3];
     
     return 0;
 }
