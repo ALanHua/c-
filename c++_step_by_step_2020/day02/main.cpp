@@ -44,6 +44,11 @@ struct student {
 };
 
 /*
+ 一个变量的地址值就是它最小的地址值
+ 大小端
+ 小端（高高低低,高字节放高地址）
+ 大端 (低低高高）
+ ----------
  -- 通用寄存器
  64bit
  RAX / RBX / RCX /RDX
@@ -63,10 +68,25 @@ struct student {
  mov dword ptr[ebp-8],3
  -----
  汇编指令
- mov dst,src 将src赋值给dst，类似 dst = src
+ mov dest,src 将src赋值给dest，类似 dest = src
  [地址值] 中括号里面的都是地址值
  word ptr 两个字节
  dword ptr 四个字节
+ qword ptr 八个字节
+ call 函数地址  -- 调用函数 E8开头的机器码 代表 call
+ lea dest,【地址值】 直接将地址值赋值给dest
+    -- load effect address 装载有效的地址值
+ ret -- 函数返回
+ jmp  内存地址  ---- 跳转到地址值中的代码执行 J开头都是跳转有条件指令
+ jne          ---- 不相等跳转
+ cmp          ---- 比较
+ 
+ xor op1 ,op2 ---- op1 = op1 ^ op2
+ add op1,op2  ---- op1 = op1 + op2
+ sub op1,op2  ---- op1 = op1 - op2
+ inc op       ---- op = op + 1
+ des op       ---- op = op -1
+
  */
 
 int main(int argc, const char * argv[]) {
