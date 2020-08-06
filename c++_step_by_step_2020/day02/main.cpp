@@ -17,6 +17,13 @@ using namespace std;
 4, 引用的本质就是指针，只是编译器弱化这个
 5, 不存在引用的引用
 6, 不存在数组引用
+ const Refreance --- 常引用
+ 1 必须写在&的左边才是常引用
+ 2 可以指向临时数据（常量,表达式,函数返回值）
+ 3,可以指向不同类型的数据 会产生临时变量
+ 4,作为函数的参数是(此规则也适用于const指针)
+    -- 可以接受const和非const实参
+    -- 可以跟非const引用构成函数重载
 */
 void testRef(void)
 {
@@ -97,8 +104,8 @@ struct Date {
     int day;
 };
 
-int main(int argc, const char * argv[]) {
-    
+void test2(void)
+{
     int a = 10;
     int b = 20;
     swap2(a,b);
@@ -113,7 +120,7 @@ int main(int argc, const char * argv[]) {
     Date d = {2020,8,5};
     Date& ref = d;
     cout << ref.year << endl;
-
+    
     int age = 40;
     int* p = &age;
     int* &refp = p;
@@ -122,14 +129,74 @@ int main(int argc, const char * argv[]) {
     refp = &height;
     cout << *refp << endl;
     
-    int array[] = {1,2,3};
+    int array[3] = {1,2,3};
     int (&refArray)[3] = array;
     refArray[0] = 10;
     cout << array[0] << endl;
     //  指针数组
     int* arr1[3] = {p,p,p};
     //  数组指针
-    int(*arr2)[3];
+    int(*arr2)[3] = &array;
+    cout << arr1[0] << " "<< arr2[0][1] << endl;
+    
+}
+
+void test(const int& p){
+
+}
+
+int func(){
+    return 8;
+}
+
+int sum(int& v1,int& v2){
+    cout << "sum(int& v1,int& v2)" << endl;
+    return v1 + v2;
+}
+
+int sum(const int& v1,const int& v2){
+   cout << "sum(const int& v1,const int& v2)" << endl;
+    return v1 + v2;
+}
+
+void test_const(void)
+{
+    int age = 10;
+    int a  = 1;
+    int b = 2;
+    // 不能修改
+    const int &ref = age;
+    test(age);
+    cout << ref << endl;
+    //    VS 可以编译通过 xcode报错
+    //    int& const ref2 = age;
+    const int& ref1 = 30;
+    const int& ref2 = a + b;
+    cout << age << " " << ref1  << " " << ref2 << endl;
+    const int& ref3 = func();
+    cout << ref3 << endl;
+    cout << sum(a, b) << endl;
+    cout << sum(10,20) << endl;
+    const int c = 10;
+    const int d = 40;
+    cout << sum(c,d) << endl;
+    
+    // 只引用当前值
+    const double &rAge = age;
+    age = 30;
+    cout << "age "<< age << endl;
+    cout << "rage "<< rAge << endl;
+    
+    int arr[] = {1,2,3};
+    int(&refArr)[3] = arr;
+    int* const &refArr2 = arr;
+    cout << refArr[1] << endl;
+    cout << refArr2[2] << endl;
+}
+
+int main(int argc, const char * argv[]) {
+    
+    test_const();
     
     return 0;
 }
