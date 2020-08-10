@@ -24,6 +24,10 @@ using namespace std;
  常量:    c_
  2--
  使用驼峰标识
+ -----------------------
+ this指针
+ 1，this指针存储函数的调用者的地址
+ 2，this指向了函数的调用者
  */
 
 //class Person{
@@ -56,7 +60,9 @@ class Car{
 public:
     int m_price;
     void run(){
-        cout << "Car run() " << endl;
+//      this指针存储函数的调用者的地址
+//      this指向了函数的调用者
+        cout << "Car run()->" << this->m_price << endl;
     }
 };
 
@@ -74,10 +80,22 @@ void testPerson()
     person.m_id = 1;
     person.m_age = 2;
     person.m_height = 3;
+    person.display();
     cout << "&person      " << &person << endl;
     cout << "&person.m_id " << &person.m_id << endl;
     cout << "&person.m_age " << &person.m_age << endl;
     cout << "&person.m_height " << &person.m_height << endl;
+    p->m_id = 20;
+    p->m_age = 39;
+    p->m_height = 40;
+    p->display();
+    // 作业
+    p = (Person*)&person.m_age;
+    p->m_id = 100;
+    p->m_age = 200;
+    p->display();
+//    中断：interupt
+//    0xcc ->int3 起到断点的作用
 }
 
 void testCar(void)
@@ -87,17 +105,18 @@ void testCar(void)
     car.run(); // call 函数地址 内存中只有一份
     
     Car car1;
-    car1.m_price = 10;
+    car1.m_price = 30;
     car1.run(); // call 函数地址 内存中只有一份
     
     Car car2;
-    car2.m_price = 10;
+    car2.m_price = 50;
     car2.run(); // call 函数地址 内存中只有一份
     
 }
 
-int main(int argc, const char * argv[]) {
-  
 
+
+int main(int argc, const char * argv[]) {
+    testPerson();
     return 0;
 }
