@@ -28,6 +28,10 @@ using namespace std;
  this指针
  1，this指针存储函数的调用者的地址
  2，this指向了函数的调用者
+ -----------------------
+ 代码区
+ 1，调用函数的时候需要分配额外的存储空间来存储变量
+ 2，代码区是只读的，在栈空间分配一段连续的空间给代码区里函数使用
  */
 
 //class Person{
@@ -63,6 +67,24 @@ public:
 //      this指针存储函数的调用者的地址
 //      this指向了函数的调用者
         cout << "Car run()->" << this->m_price << endl;
+    }
+};
+
+// 封装
+struct Person2 {
+private:
+    int m_age;
+public:
+    void setAge(int age){
+        if(age < 0){
+            m_age = 1;
+        }else{
+            m_age = age;
+        }
+    }
+    
+    int getAge(){
+        return m_age;
     }
 };
 
@@ -114,9 +136,56 @@ void testCar(void)
     
 }
 
+void testPerson2(void)
+{
+    Person2 person;
+    person.setAge(30);
+    cout << person.getAge() << endl;
+}
 
+void testMemory(void)
+{
+//    int* p = (int*)malloc(4);
+//    *p =10;
+//    malloc / free
+    char* p = (char*)malloc(4);
+    memset(p, 0, sizeof(char)*4);
+    *p = 10;
+    *(p + 1) = 11;
+    *(p + 2) = 12;
+    *(p + 3) = 13;
+    free(p);
+//    new / delete
+    int* p1 = new int;
+    *p1 = 10;
+    delete p1;
+    char* p2 = new char;
+    delete p2;
+//  new[] / delete[]
+    char* p3 = new char[4];
+    *p3 = 10;
+    *(p3 + 1) = 21;
+    *(p3 + 2) = 22;
+    *(p3 + 3) = 23;
+    delete [] p3;
+//  内存初始化
+    int* p4 = new int();
+    int* p5 = new int(5);
+    cout << *p4 << endl; // 0
+    cout << *p5 << endl; // 5
+//  数组
+    int* p6 = new int[3]();  // 初始化0
+    int* p7 = new int[3]{};  // 初始化0
+    int* p8 = new int[3]{5}; // 首元素初始化5，其他初始化为0
+    delete p4;
+    delete p5;
+    delete[] p6;
+    delete[] p7;
+    delete[] p8;
+}
 
-int main(int argc, const char * argv[]) {
-    testPerson();
+int main(int argc, const char * argv[])
+{
+    testMemory();
     return 0;
 }
