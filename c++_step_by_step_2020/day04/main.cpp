@@ -27,9 +27,23 @@ using namespace std;
  2,通过malloc分配对象，调用free不会调用析构函数
 ------------------------------------
  构造和析构函数的权限必须是oublic
- ------------------------------------
+------------------------------------
  命名空间:解决命名冲突的问题
- 
+ 1,命名空间不影响内存布局
+ 2,多个地方定义命名空间，它会合并
+------------------------------------
+ 继承
+ 1,c++ 没有基类
+ 2，从父类继承过来的成员变量会排在内存前面
+------------------------------------
+ 成员访问权限
+ 1,private 私有的，只能当前类内部可以访问（class 默认）
+ 2,protected 子类内部,当前n类部可以访问
+ 3,public  公共的，任何地方都可以访问（struct默认）
+ 4,子类内部访问父类成员的权限，是以下2项<成员变量的权限和上一层的继承方式>中权限最小的那个
+ 5,不影响内存布局
+ 6,class默认是private继承，struct默认是public继承
+ 7,子类一般使用public继承
  */
 struct Car {
     int m_price;
@@ -83,28 +97,32 @@ public:
  类实现和定义分离
  */
 //---------声明---------------
-class Person2 {
-private:
-    int m_age;
-public:
-    Person2();
-    ~Person2();
-    void setAge(int age);
-    int getAge();
-};
+namespace DAY04 {
+    class Person2 {
+    private:
+        int m_age;
+    public:
+        Person2();
+        ~Person2();
+        void setAge(int age);
+        int getAge();
+    };
+}
 //--------实现----------------
-Person2::Person2(){
-    m_age = 0;
-}
-Person2::~Person2(){
-    
-}
-void Person2::setAge(int age){
-    m_age = age;
-}
+namespace DAY04 {
+    Person2::Person2(){
+        m_age = 0;
+    }
+    Person2::~Person2(){
+        
+    }
+    void Person2::setAge(int age){
+        m_age = age;
+    }
 
-int Person2::getAge(){
-    return m_age;
+    int Person2::getAge(){
+        return m_age;
+    }
 }
 //------------------------
 namespace DAY04 {
@@ -118,7 +136,40 @@ namespace DAY04 {
         int m_age;
         int m_money;
     };
+    // 命名空间可以嵌套
+    namespace DAY04_01{
+        int m_age;
+    }
 }
+// 会合并到上一个里面
+namespace DAY04 {
+    int g_no;
+}
+
+void func(){
+    
+}
+//-------------------------
+struct Human {
+private:
+    int m_age;
+public:
+    void setAge(int age){m_age = age;}
+    int getAge(){return m_age;}
+    void run(){}
+};
+
+struct Student : public Human{
+    int m_score;
+    void study(){}
+};
+
+struct GoodStudent : public Student{
+    int m_salary;
+    void work(){}
+};
+
+//-------------------------
 void testPerson(void)
 {
     // 栈空间成员变量未初始化
@@ -143,7 +194,21 @@ void testNamespace(void){
     cout << sizeof(person4) << endl;
     DAY04::g_age = 20;
     DAY04::func();
+//  不需要加命名空间前缀
+    using namespace DAY04;
+    g_age = 30;
+    DAY04::func();
+    // 全局命名空间,所有命名空间都嵌套在全局b命名空间中
+    ::func();
+    ::DAY04::func();
+//
+    Person2 person;
 }
+
+void testClass(void){
+    
+}
+
 int main(int argc, const char * argv[])
 {
     testNamespace();
