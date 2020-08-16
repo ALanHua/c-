@@ -113,13 +113,13 @@ class Student2: public Person4 {
 
 struct Animal {
     int m_age;
-   virtual void speak(){
+    virtual void speak(){
         cout << "Animal::speak()" << endl;
-    }
+     }
     // 子类默认也是虚函数
-    virtual void run(){
+     virtual void run(){
         cout << "Animal::run()" << endl;
-    }
+     }
 };
 
 struct Dog : Animal{
@@ -135,6 +135,8 @@ struct Cat :Animal{
     int m_life;
     
     void speak(){
+        // 调用父类里的函数
+        Animal::speak();
         cout << "Cat::speak()" << endl;
     }
     void run(){
@@ -143,11 +145,22 @@ struct Cat :Animal{
 };
 
 struct Pig :Animal{
+    int m_life;
+    
     void speak(){
         cout << "Pig::speak()" << endl;
     }
     void run(){
         cout << "Pig::run()" << endl;
+    }
+};
+
+struct WhiteCat :  Cat{
+    void speak(){
+        cout << "WhiteCat::speak()" << endl;
+    }
+    void run(){
+        cout << "WhiteCat::run()" << endl;
     }
 };
 
@@ -177,14 +190,28 @@ void testPerson(void){
 }
 
 void testPolymorphic(void){
-    liu(new Dog());
-    liu(new Cat());
-    liu(new Pig());
     
+    Dog* d = new Dog();
+    Cat* c = new Cat();
+    Pig* p = new Pig();
+    liu(d);
+    liu(c);
+    liu(p);
+    delete d;
+    delete c;
+    delete p;
+// ------------------------------
     Animal* cat = new Cat();// 成员变量默认初始化为0
     cat->m_age = 20;
     cat->speak();
     cat->run();
+    cout << sizeof(Animal) << endl;
+    delete cat;
+    
+    Animal* cat1 = new WhiteCat();
+    cat1->speak();
+    cat1->run();
+    delete cat1;
     
 }
 
