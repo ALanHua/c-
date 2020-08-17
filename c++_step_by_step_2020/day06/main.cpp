@@ -27,6 +27,8 @@ using namespace std;
     1,如果子类继承的多个父类y都有虚函数，那么子类对象就会产生对应的多张虚表
  -- 同名函数
  -- 同名成员变量
+ -- 菱形继承
+    1,虚继承可以解决菱形继承带来的问题
 --------------------------
  */
 
@@ -128,6 +130,49 @@ struct Undergradute: Student,Worker {
         cout << "Udergradute::eat " <<endl;
     }
 };
+// 菱形继承
+struct Person {
+    int m_age = 1;
+};
+
+/**
+ 内存布局
+ | 虚表指针  8
+ | m_score  4
+ | m_age    4
+ */
+struct Student2: virtual Person {
+    int m_score = 2;
+};
+
+/**
+ 内存布局
+ | 虚表指针   8
+ | m_salary  4
+ | m_age     4
+ */
+struct Worker2: virtual Person {
+    int m_salary = 3;
+};
+
+/**
+ 内存布局
+ | 内存对齐    8
+ ---Student2----
+ | 虚表指针    8
+ | m_score   4
+ ---Worker2----
+ | 虚表指针    8
+ | m_salary  4
+  ---Undergradute2----
+ | m_grade   4
+  ---Person----
+ | m_age     4
+ */
+struct Undergradute2: Student2,Worker2 {
+    // m_age 只存在一份
+    int m_grade = 4;
+};
 
 void test(void)
 {
@@ -141,6 +186,8 @@ void test(void)
     ug.Student::eat();
     ug.Worker::eat();
     ug.eat();
+    Undergradute2 ug2;
+    cout << sizeof(ug2) << endl;
 }
 
 int main(int argc, const char * argv[]) {
