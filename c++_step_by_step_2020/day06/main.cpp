@@ -30,6 +30,22 @@ using namespace std;
  -- 菱形继承
     1,虚继承可以解决菱形继承带来的问题
 --------------------------
+ 静态成员
+ 1,存储在数据段(全局区,类似于全局变量）,整个程序运行过程中只有一份内存
+ 2,可以通过对象.静态成员变量,对象指针->静态成员,类名::静态成员变量
+ 3,对比全局变量,它可以设定访问权限(private,protected,public)
+ 4,必须初始化，必须在类外面初始化，初始化不能带static，如果类的声明和实现分离,它必须在.cpp里实现
+ 静态成员函数
+ 1,函数内部不能使用this指针(this指针只能在非静态成员函数使用)
+ 2,不能是虚函数(虚函数只能是非静态成员函数)
+ 3,内部不能访问非静态成员变量\函数，只能访问静态成员变量\函数
+ 4,非静态成员函数内部可以访问静态成员变量\函数
+ 5,构造析构函数不能是静态
+ 6.声明和实现分离,实现不要带static
+ ---------------------------
+ ds --- data segment
+ 
+ --------------------------
  */
 
 struct Animal2 {
@@ -174,6 +190,100 @@ struct Undergradute2: Student2,Worker2 {
     int m_grade = 4;
 };
 
+// 多继承的应用
+class JobBaomu {
+public:
+    virtual void clean() = 0;
+    virtual void cook() = 0;
+};
+
+class JobTeacher {
+public:
+    virtual void playfootball() = 0;
+    virtual void playbaseball() = 0;
+};
+
+class Student3 : public JobBaomu,public JobTeacher{
+    int m_score;
+public:
+    void clean(){
+        
+    }
+    
+    void cook(){
+        
+    }
+    
+    void playfootball(){
+        
+    }
+    
+    void playbaseball(){
+        
+    }
+};
+
+class Worker3 : public JobBaomu,public JobTeacher{
+    int m_salary;
+    void clean(){
+    }
+    
+    void cook(){
+        
+    }
+    
+    void playfootball(){
+        
+    }
+    
+    void playbaseball(){
+        
+    }
+};
+//---------------------------------
+class Car {
+public:
+    static int m_price;// 相当于全局变量
+    static void run(){
+        cout << "run()" << endl;
+    }
+    void test(){
+        run();
+        m_price = 10;
+    }
+};
+// 静态成员变量必须放在类外面初始化的
+int Car::m_price = 0;
+
+//-----------------------
+class Person2{
+public:
+    static int m_age;
+};
+int Person2::m_age = 0;
+class Student4: public Person2 {
+public:
+    
+};
+
+class Car3 {
+private:
+    static int ms_count;
+public:
+    Car3(){
+        // 严格来说这里要考虑多线程，这个最好使用原子类型
+        ms_count++;
+    }
+    ~Car3(){
+        ms_count--;
+    }
+// 可以通过类名调用
+    static int getCount(){
+        return ms_count;
+    }
+};
+int Car3::ms_count = 0;
+
 void test(void)
 {
     Animal2* cat = new Cat2();
@@ -190,10 +300,33 @@ void test(void)
     cout << sizeof(ug2) << endl;
 }
 
-int main(int argc, const char * argv[]) {
-   
+void test2(void)
+{
+    Car car1;
+    car1.m_price = 100;
+    car1.run();
+    Car car2;
+    car2.m_price = 200;
+    Car car3;
+    car3.m_price = 300;
+    cout << Car::m_price  << endl;
     
-    test();
+    Car* p = new Car();
+    p->m_price = 400;
+    p->run();
+    delete p;
+    cout <<  Car::m_price  << endl;
     
+    cout << &Student4::m_age << endl;
+    cout << &Person2::m_age << endl;
+    
+    Car3 car4;
+    cout << Car3::getCount() << endl;
+    
+}
+
+int main(int argc, const char * argv[])
+{
+    test2();
     return 0;
 }
