@@ -32,8 +32,12 @@ using namespace std;
  1,引用类型成员变量必须初始化(不考虑static情况)
 ------------------------
  copy构造函数
- 1,当利用自己存在的对象创建一个新对象时(类似于拷贝)，就会y调用新对象的构造函数进行初始化
- 2,拷贝构造函数的格式是固定的，接收一个const引用作为参数
+ 1,构造函数的一种，只会在对象创建的时候调用
+ 2,当利用自己存在的对象创建一个新对象时(类似于拷贝)，就会y调用新对象的构造函数进行初始化
+ 3,拷贝构造函数的格式是固定的，接收一个const引用作为参数
+------------------------
+ 深copy 浅copy
+ 1,
 ------------------------
  */
 class Rocket {
@@ -90,7 +94,7 @@ class Car2 {
     int m_length;
 public:
     Car2(int price= 0,int length = 0):m_price(price),m_length(length){
-        cout << "Car(int price = 0,int length = 0)" << endl;
+        cout << "Car2(int price = 0,int length = 0)" << endl;
     }
     // copy 构造函数
     Car2(const Car2& car):m_price(car.m_price),m_length(car.m_length){
@@ -104,6 +108,48 @@ public:
     }
 };
 
+class Person {
+    int m_age;
+public:
+    Person(int age = 0) : m_age(age){}
+    Person(const Person& person):m_age(person.m_age){}
+};
+
+class Student: public Person {
+   int m_score;
+public:
+    Student(int age = 0,int score = 0) : Person(age),m_score(score){}
+// 调用父类的拷贝构造
+    Student(const Student& student):Person(student),m_score(student.m_score){
+        // 如果显示的调用父类的拷贝构造函数，子类就不会调用父类默认的无惨构造函数
+    }
+};
+
+class Car3 {
+    int m_price;
+    char* m_name;
+public:
+    
+    Car3(int price = 0,char* name = NULL):m_price(price)
+    {
+        if (name == NULL) {
+            return;
+        }
+        // 申请内存
+        m_name = new char[strlen(name) + 1] {};// {}数据请0
+        // copy 数据
+        strcpy(m_name, name);
+    }
+    ~Car3(){
+        if (m_name) {
+            delete[] m_name;
+            m_name = NULL;
+        }
+    }
+    void display(){
+        cout << "price is " << m_price << ",name is " << m_name << endl;
+    }
+};
 
 void testRocket(void)
 {
@@ -133,6 +179,21 @@ void test01(void)
 //   回调copy构造函数初始化
     Car2 car4(car3);
     car4.display();
+//  car5 = car4; 等价于 car5(car4);
+    Car2 car5 = car4;
+    Car2 car6;
+// 不会调用拷贝构造，仅仅简单的赋值操作
+    car6 = car3;
+    car6.display();
+    
+    Student stu1(10,100);
+    Student stu2(stu1);
+    
+    char name[] = {'b','m','w','\0'};
+    Car3* car7 = new Car3(100,name);
+    car7->display();
+    delete car7;
+    
 }
 
 int main(int argc, const char * argv[])
