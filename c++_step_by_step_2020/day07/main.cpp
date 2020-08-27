@@ -37,7 +37,8 @@ using namespace std;
  3,拷贝构造函数的格式是固定的，接收一个const引用作为参数
 ------------------------
  深copy 浅copy
- 1,
+ 1,浅拷贝,指针类型变量只会拷贝地址值
+ 2,深拷贝,将指针指向的内容拷贝到新的存储空间
 ------------------------
  */
 class Rocket {
@@ -128,18 +129,24 @@ public:
 class Car3 {
     int m_price;
     char* m_name;
-public:
     
-    Car3(int price = 0,char* name = NULL):m_price(price)
-    {
-        if (name == NULL) {
-            return;
-        }
+    void copy(const char* name = NULL){
+        if (name == NULL) {return;}
         // 申请内存
         m_name = new char[strlen(name) + 1] {};// {}数据请0
         // copy 数据
         strcpy(m_name, name);
     }
+public:
+    
+    Car3(int price = 0,const char* name = NULL):m_price(price){
+        copy(name);
+    }
+    
+    Car3(const Car3& car):m_price(car.m_price){
+        copy(car.m_name);
+    }
+    
     ~Car3(){
         if (m_name) {
             delete[] m_name;
@@ -194,6 +201,9 @@ void test01(void)
     car7->display();
     delete car7;
     
+    Car3 car8(100,"byd");
+    Car3 car9 = car8;
+    car9.display();
 }
 
 int main(int argc, const char * argv[])
