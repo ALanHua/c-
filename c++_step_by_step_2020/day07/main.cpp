@@ -49,6 +49,8 @@ private:
     static Rocket* ms_rocket;// 内存使用灵活
     Rocket(){}
     ~Rocket(){}
+    void operator=(const Rocket& rocket){}
+    Rocket(const Rocket& rocket){}
 public:
     static Rocket* shareRocket(){
         // 多线程安全问题
