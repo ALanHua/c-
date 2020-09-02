@@ -14,7 +14,9 @@ using namespace std;
 ------------------------------
 运算符重载
 1,可以为运算符增加一些新的功能
- 
+2,仿函数,将一个对象当作一个函数一样使用
+3,有些运算符是不能重载的如(./::/?:/sizeof)
+4,有些运算符只能重载为成员函数如(=/[]/()/->)
 -----------------------------
 */
 
@@ -108,6 +110,37 @@ public:
     }
 };
 
+class Person2 {
+public:
+    int m_age;
+    
+    Person2& operator=(const Person2& person){
+        m_age = person.m_age;
+        return *this;
+    }
+    
+};
+
+class Student: public Person2 {
+    
+public:
+    int m_core;
+    // 调用父类的运算符重载
+    Student& operator=(const Student& student){
+        Person2::operator=(student);
+        m_core = student.m_core;
+        return *this;
+    }
+    
+};
+
+class Sum {
+    int m_age;
+public:
+    int operator()(int a,int b){
+        return a + b;
+    }
+};
 
 void testPoint(void)
 {
@@ -139,6 +172,18 @@ void testPoint(void)
     Person a2(20,175);
 //    (a1 = a2) = Person(50,20); // 赋值函数私有化后就无法赋值
     a1.display();
+    
+    Student stu1;
+    stu1.m_age = 20;
+    stu1.m_core = 100;
+    
+    Student stu2;
+    stu2 = stu1;
+    
+    Sum sum;
+    // 仿函数
+    cout << sum(10,20) << endl;
+    
 }
 
 int main(int argc, const char * argv[])
