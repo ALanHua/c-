@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "add.hpp"
+#include "array.hpp"
 
 using namespace std;
 /**
@@ -22,11 +23,36 @@ using namespace std;
  */
 // typename == class
 
+class Point {
+    int m_x;
+    int m_y;
+public:
+    Point(int x,int y):m_x(x),m_y(y){
+        
+    }
+};
 
 void testTemplate(void)
 {
     cout << add<int>(10,20) << endl;
     cout << add<double>(3.0,4.0) << endl;
+    
+    Array<int> array(3);
+    array.add(10);
+    array.add(20);
+    array.add(23);
+    array.add(24);
+    cout << array.get(0) << endl;
+    cout << array.size() << endl;
+    cout << array[3] << endl;
+    
+    cout << array << endl;
+//    Array<Point> array2;
+//    array2.add(Point(1,2));
+//    array2.add(Point(3,4));
+////    cout << array2.get(0) << endl;
+//    cout << array2.size() << endl;
+    
 }
 
 int main(int argc, const char * argv[]) {
