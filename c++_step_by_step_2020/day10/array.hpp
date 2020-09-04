@@ -14,7 +14,8 @@ using namespace std;
 
 template <typename Item>
 class Array {
-    friend ostream&operator<<<>(ostream&,const Array<Item>&);
+    template <typename Item2>
+    friend ostream&operator<<(ostream&,const Array<Item2>&);
     Item* m_data;   // 元素d首地址
     int m_size;    // 元素个数
     int m_capacity;// 容量
@@ -73,8 +74,8 @@ Item Array<Item>::operator[](int index){
     return get(index);
 }
 
-template <typename Item>
-ostream& operator<< <>(ostream& cout,const Array<Item> &array){
+template <typename Item2>
+ostream& operator<<(ostream& cout,const Array<Item2> &array){
     cout << "[";
     for (int i = 0; i < array.m_size; i++) {
         if (i != 0) {
