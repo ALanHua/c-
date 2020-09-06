@@ -22,9 +22,19 @@ using namespace std;
 -----------------------------
 类型转换 xx_casr<type>(expression)
 1,static_cast:一般用在去除const属性,将const转换成非const
-2,dynamic_cast
-3,reinterpret_cast
-4,const_cast
+2,dynamic_cast:一般用于多态类型的转换，有运行时安全检测
+3,reinterpret_cast:属于比较底层的强制转换,没有任何类型检查和格式转换,仅仅是简单的二进制拷贝
+4,const_cast:常用于基本数据类型的转换,非const转换成const
+-----------------------------
+auto
+1,可以从初始化表达式中推断出变量的类型,大大简化编程工作
+2,属于编译器特性,不影响最终机器码的质量,不影响运行效率
+-----------------------------
+decltye
+1,可以获取变量的类型
+-----------------------------
+nullptr 空指针
+1,可以解决NULL的二义性问题
 -----------------------------
  */
 // typename == class
@@ -45,8 +55,22 @@ ostream& operator<<(ostream& cout,const Point &point){
 
 class Person {
 public:
+    virtual void run(){}
+};
+
+class Student: public Person {
+    
+public:
     
 };
+
+void func(int v){
+    cout << "func(int v) -" << v << endl;
+}
+
+void func(int* v){
+    cout << "func(int* v) -" << v << endl;
+}
 
 void testTemplate(void)
 {
@@ -76,11 +100,46 @@ void testCast(void)
     const Person* p = new Person();
     Person* p1 = const_cast<Person*>(p);
     cout << p1 << endl;
+    Person* p2 = new Student();
+    
+    Student* stu1 = dynamic_cast<Student*>(p1);// 不安全
+    Student* stu = dynamic_cast<Student*>(p2);
+    cout << stu << "," << stu1 << endl;
+    const Person* p3 = static_cast<Person*>(p1);
+    cout << p3 << endl;
     delete p;
+    delete p2;
+    int a = 10;
+    double d = static_cast<double>(a);
+    cout << d  << endl;
+    cout << "-------" << endl;
+    cout << sizeof(int) << endl;
+    cout << sizeof(double) << endl;
+    double f = reinterpret_cast<double&>(a);
+    cout << f << endl;
     
 }
 
+void test02()
+{
+    auto a =10;
+    int* p = nullptr;
+    func(p);
+    func(a);
+    int array[] = {11,22,33,44,55};
+    // c++11 快速遍历
+    for (int item : array) {
+        cout << item << endl;
+    }
+    // 数组简单初始化
+    int array2[]{11,22,33,44,55};
+    for (int item : array2) {
+        cout << item << endl;
+    }
+
+}
+
 int main(int argc, const char * argv[]) {
-    testCast();
+    test02();
     return 0;
 }
