@@ -23,7 +23,10 @@ using namespace std;
  3,为了增强可读性和方便团队协作,如果函数内部可能s会抛出异常
    建议函数声明一下异常类型
  ---------------------
- 标准异常
+ 智能指针
+ 1,为了解决传统指针存在的问题
+ 2,shared_ptr可以指向同一对象,当最后一个shared_ptr在作用域范围内接受时,对象才会销毁
+ 3,shared_ptr可以通过一个已存在的智能指针初始化一个新的智能指针
  
  ---------------------
  */
@@ -239,9 +242,67 @@ void testException03(){
     }
 }
 
+class Person {
+    int m_age;
+public:
+    Person(){
+        cout << "Person()" << endl;
+    }
+    Person(int age):m_age(age){
+        cout << "Person()" << endl;
+    }
+    
+    ~Person(){
+        cout << "~Person()" << endl;
+    }
+    void run(){
+        cout << "run()-"<< m_age << endl;
+    }
+};
+
+template <typename T>
+class SmartPointer {
+    T* m_obj;
+public:
+    SmartPointer(T* obj):m_obj(obj){
+        
+    }
+    
+    ~SmartPointer(){
+        if (m_obj == nullptr) {
+            return;
+        }
+        delete m_obj;
+    }
+    
+    T* operator->(){
+        return m_obj;
+    }
+};
+
+void testSmatPointer(){
+    // 智能指针，一定要指向堆空间
+    // 缺点,不能使用数组
+    auto_ptr<Person> p(new Person(20));
+    p->run();
+    
+    SmartPointer<Person> p2(new Person(40));
+    p2->run();
+    // 编译不过
+//    shared_ptr<Person[]> p3(new Person[5]);
+    shared_ptr<Person> p4(new Person[2],[](Person*p){delete[] p;});
+    //
+    shared_ptr<Person> p5(new Person(100));
+    shared_ptr<Person> p6 = p5;
+    shared_ptr<Person> p7 = p6;
+    shared_ptr<Person> p8(p7);
+    cout << p5.use_count() << endl;
+    p8->run();
+}
+
 int main(int argc, const char * argv[]) {
     
-    testException03();
+    testSmatPointer();
     
     return 0;
 }
