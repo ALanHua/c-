@@ -27,7 +27,7 @@ using namespace std;
  1,为了解决传统指针存在的问题
  2,shared_ptr可以指向同一对象,当最后一个shared_ptr在作用域范围内接受时,对象才会销毁
  3,shared_ptr可以通过一个已存在的智能指针初始化一个新的智能指针
- 
+ 4,unique_ptr也会对一个对象产生强引用,它可以确保同一时间只有1个指针指向对象
  ---------------------
  */
 
@@ -280,6 +280,37 @@ public:
     }
 };
 
+class Person2;
+
+class Car {
+    
+public:
+    weak_ptr<Person2> m_person;
+    
+    Car(){
+        cout << "Car()" << endl;
+    }
+    
+    ~Car(){
+        cout << "~~Car()" << endl;
+    }
+};
+
+class Person2 {
+    
+public:
+    shared_ptr<Car> m_car;
+    
+    Person2(){
+        cout << "Person2()" << endl;
+    }
+    
+    ~Person2(){
+        cout << "~~Person2()" << endl;
+    }
+};
+
+
 void testSmatPointer(){
     // 智能指针，一定要指向堆空间
     // 缺点,不能使用数组
@@ -298,7 +329,19 @@ void testSmatPointer(){
     shared_ptr<Person> p8(p7);
     cout << p5.use_count() << endl;
     p8->run();
+    
+    shared_ptr<Person2> person(new Person2());
+    shared_ptr<Car> car(new Car());
+    //  循环引用
+    person->m_car = car;
+    car->m_person = person;
+    
+    unique_ptr<Person2> p9;
+    unique_ptr<Person2> p10(new Person2());
+    p9 = std::move(p10);
+    
 }
+
 
 int main(int argc, const char * argv[]) {
     
